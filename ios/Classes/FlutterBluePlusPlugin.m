@@ -118,7 +118,7 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
             Log(LDEBUG, @"initializing CBCentralManager");
 
             NSDictionary *options = @{
-                CBCentralManagerOptionShowPowerAlertKey: self.showPowerAlert
+                CBCentralManagerOptionShowPowerAlertKey: self.showPowerAlert,
                 CBCentralManagerOptionRestoreIdentifierKey: @"flutterBluePlus"
             };
 
@@ -1053,15 +1053,15 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
     }
 }
 
-(void)centralManager:(CBCentralManager *)central willRestoreState:(NSDictionary<NSString *, id> *)dict
+- (void)centralManager:(CBCentralManager *)central willRestoreState:(NSDictionary<NSString *, id> *)dict
 {
     Log(LVERBOSE, @"willRestoreState");
 
     Log(LDEBUG, @"restore connected peripherals");
-    connectedPeripherals = [dict objectForKey:CBCentralManagerRestoredStatePeripheralsKey];
+    self.connectedPeripherals = [dict objectForKey:CBCentralManagerRestoredStatePeripheralsKey];
 
     Log(LDEBUG, @"restore connected peripherals delegates");
-    for (CBPeripheral *peripheral in connectedPeripherals) {
+    for (CBPeripheral *peripheral in self.connectedPeripherals) {
         peripheral.delegate = self;
     }
 }
